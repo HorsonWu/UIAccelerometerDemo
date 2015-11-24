@@ -15,6 +15,7 @@
 		712CEFD91C03EFAD0093BB6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 712CEFD71C03EFAD0093BB6C /* LaunchScreen.storyboard */; };
 		712CEFE41C03EFAD0093BB6C /* UIAccelerometerDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712CEFE31C03EFAD0093BB6C /* UIAccelerometerDemoTests.m */; };
 		712CEFEF1C03EFAD0093BB6C /* UIAccelerometerDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 712CEFEE1C03EFAD0093BB6C /* UIAccelerometerDemoUITests.m */; };
+		71A39D581C03FE4E0008D1AA /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71A39D571C03FE4E0008D1AA /* CoreMotion.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		712CEFEA1C03EFAD0093BB6C /* UIAccelerometerDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UIAccelerometerDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		712CEFEE1C03EFAD0093BB6C /* UIAccelerometerDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIAccelerometerDemoUITests.m; sourceTree = "<group>"; };
 		712CEFF01C03EFAD0093BB6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71A39D571C03FE4E0008D1AA /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				71A39D581C03FE4E0008D1AA /* CoreMotion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +84,7 @@
 		712CEFBD1C03EFAD0093BB6C = {
 			isa = PBXGroup;
 			children = (
+				71A39D571C03FE4E0008D1AA /* CoreMotion.framework */,
 				712CEFC81C03EFAD0093BB6C /* UIAccelerometerDemo */,
 				712CEFE21C03EFAD0093BB6C /* UIAccelerometerDemoTests */,
 				712CEFED1C03EFAD0093BB6C /* UIAccelerometerDemoUITests */,
@@ -498,6 +502,7 @@
 				712CEFF51C03EFAD0093BB6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		712CEFF61C03EFAD0093BB6C /* Build configuration list for PBXNativeTarget "UIAccelerometerDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +511,7 @@
 				712CEFF81C03EFAD0093BB6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		712CEFF91C03EFAD0093BB6C /* Build configuration list for PBXNativeTarget "UIAccelerometerDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -514,6 +520,7 @@
 				712CEFFB1C03EFAD0093BB6C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
