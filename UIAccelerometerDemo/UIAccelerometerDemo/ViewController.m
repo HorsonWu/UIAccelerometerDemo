@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import <CoreMotion/CoreMotion.h>
-@interface ViewController ()
+@interface ViewController ()<UIAlertViewDelegate>
 {
     //数据滤波后的数值
     UIAccelerationValue filteredAccelX;
@@ -24,7 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    [self accelerometerOfCoreMotionType];
+    [self accelerometerOfCoreMotionType];
+//    [self gyroOfCoreMotionType];
     
 }
 -(void)viewWillAppear:(BOOL)animated{
@@ -35,13 +36,18 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
 //    [self removeNotificationOfGetDeviceOrientation];
-    [self resignFirstResponder];
+//    [self resignFirstResponder];
+    
+    
+//    [self.motionManager stopGyroUpdates];
+//    [self.motionManager stopAccelerometerUpdates];
+//    [self.motionManager stopDeviceMotionUpdates];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:YES];
-    [self becomeFirstResponder];
+//    [self becomeFirstResponder];
 }
 
 -(BOOL)canBecomeFirstResponder{
@@ -52,22 +58,59 @@
 -(void)accelerometerOfCoreMotionType{
     self.motionManager = [CMMotionManager new];
     self.motionManager.accelerometerUpdateInterval = 0.1;
+    [self startShake];
+}
+
+//- (void)alertViewCancel:(UIAlertView *)alertView{
+//}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        [self startShake];
+
+    }
+}
+-(void)startShake{
     if ([self.motionManager isAccelerometerAvailable]) {
-        [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue mainQueue]
+        [self.motionManager startAccelerometerUpdatesToQueue:[[NSOperationQueue alloc]init]
                                                  withHandler:^(CMAccelerometerData * _Nullable accelerometerData, NSError * _Nullable error) {
                                                      if (error) {
+                                                         
                                                          [self.motionManager stopAccelerometerUpdates];
                                                      }
                                                      else
                                                          
                                                      {
-                                                         NSLog(@"x = %f,y = %f,z = %f",accelerometerData.acceleration.x, accelerometerData.acceleration.y,accelerometerData.acceleration.z);
+                                                         
+                                                         //综合3个方向的加速度
+                                                         double accelerameter =sqrt( pow(accelerometerData.acceleration.x , 2 ) + pow(accelerometerData.acceleration.y , 2 ) + pow(accelerometerData.acceleration.z , 2) );
+                                                         //当综合加速度大于2.3时，就激活效果（此数值根据需求可以调整，数据越小，用户摇动的动作就越小，越容易激活，反之加大难度，但不容易误触发）
+                                                         if (accelerameter>2.3f) {
+                                                             //立即停止更新加速仪（很重要！）
+                                                             
+                                                             
+                                                             NSLog(@"hahahaha......");
+                                                             
+                                                             [self.motionManager stopAccelerometerUpdates];
+                                                             
+                                                             dispatch_async(dispatch_get_main_queue(), ^{
+                                                                 //UI线程必须在此block内执行，例如摇一摇动画、UIAlertView之类
+                                                                 
+                                                                 UIAlertView *alertView =[[UIAlertView alloc] initWithTitle:nil message:@"摇到个人头" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                                                                 
+                                                                 [alertView show];
+                                                                 
+                                                             });
+                                                         }
+                                                         
+                                                         //                                                         NSLog(@"x = %f,y = %f,z = %f",accelerometerData.acceleration.x, accelerometerData.acceleration.y,accelerometerData.acceleration.z);
+                                                         
+                                                         
                                                      }
                                                  }];
     }
 
 }
-
 
 //感知设备方向
 -(void)getTheDeviceOrientation{
@@ -126,6 +169,14 @@
             {
                 CMRotationRate rotate = gyroData.rotationRate;
                 NSLog(@"x = %f,y = %f,z = %f",rotate.x, rotate.y,rotate.z);
+                CGFloat x =  [self calculatehighPassFilteredDataWithNewAcceleration:filteredAccelX andPreviousValue:rotate.x];
+                CGFloat y =  [self calculatehighPassFilteredDataWithNewAcceleration:filteredAccelX andPreviousValue:rotate.y];
+                CGFloat z =  [self calculatehighPassFilteredDataWithNewAcceleration:filteredAccelX andPreviousValue:rotate.z];
+                filteredAccelX = x;
+                filteredAccelY = y;
+                filteredAccelZ = z;
+                
+                 NSLog(@"filteredAccelX = %f,filteredAccelY = %f,filteredAccelZ = %f",filteredAccelX, filteredAccelY,filteredAccelZ);
             }
         }];
     }
@@ -168,9 +219,7 @@
 #pragma mark ----------------------------------------------------------------
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    [self.motionManager stopGyroUpdates];
-    [self.motionManager stopAccelerometerUpdates];
-    [self.motionManager stopDeviceMotionUpdates];
+    
     // Dispose of any resources that can be recreated.
 }
 
